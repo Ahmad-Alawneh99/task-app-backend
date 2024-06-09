@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+      "target": "ES6",
+      "outDir": "./dist",
+      "moduleResolution": "NodeNext",
+      "module": "NodeNext",
+      "esModuleInterop": true,
+      "strictNullChecks": true,
+      "resolveJsonModule": true,
+      "skipLibCheck": true
+    },
+    "include": ["./src/**/*.ts", "./mochaConfig.ts"],
+    "exclude": ["node_modules", "./src/**/*.spec.ts"]
+}
