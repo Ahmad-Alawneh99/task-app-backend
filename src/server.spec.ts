@@ -1,3 +1,4 @@
+// For checking that test config is working
 import { expect } from 'chai';
 
 describe('server.js', () => {
