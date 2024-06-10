@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import * as tokenUtils from '../shared/tokenUtils';
 import User from '../models/user';
 import * as validationUtils from '../shared/validationUtils';
+import { isUserLoggedIn } from '../shared/authUtils';
 
 const userRouter = express.Router();
 
@@ -61,7 +62,27 @@ const handleUserSignIn = async (req: Request, res: Response) => {
 	}
 };
 
+const getUserProfile = async (req: Request, res: Response) => {
+	const { userId } = req.params;
+
+	try {
+		const user = await User.findOne({ _id: userId });
+		if (!user) {
+			return res.status(400).send({ success: false, code: 400, message: 'Profile info not found' });
+		}
+
+		user.password = ''; // do not return password with the response
+
+		return res.status(200).send({ success: true, code: 200, user });
+	} catch (error) {
+		console.error('Error:', error);
+
+		return res.status(500).send({ success: false, code: 500, message: error.message });
+	}
+};
+
 userRouter.post('/sign-in', handleUserSignIn);
 userRouter.post('/sign-up', handleUserSignup);
+userRouter.get('/me', isUserLoggedIn, getUserProfile);
 
 export default userRouter;
